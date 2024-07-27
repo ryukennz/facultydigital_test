@@ -14,7 +14,7 @@ class AuthController {
                     message: 'Invalid input'
                 })
             }
-            if(password.length < 6 || username.length < 6) {
+            if (password.length < 6 || username.length < 6) {
                 return res.status(400).json({
                     success: false,
                     message: 'Password or username must be at least 6 characters'
@@ -23,7 +23,7 @@ class AuthController {
 
             const user = await User.findOne({ username })
 
-            if(user) {
+            if (user) {
                 return res.status(422).json({
                     success: false,
                     message: 'User already exists'
@@ -46,20 +46,18 @@ class AuthController {
             })
         } catch (error) {
             console.log(error);
-            if(error.status === 500) {
+            if (error.status === 500) {
                 return res.status(500).json({
                     success: false,
                     message: 'Internal server error'
                 })
             }
         }
-
-
     }
     static async login(req, res) {
         try {
             const { username, password } = req.body
-            if(!username || !password || isSpaceOnlyLogin(username, password)) {
+            if (!username || !password || isSpaceOnlyLogin(username, password)) {
                 return res.status(400).json({
                     success: false,
                     message: 'Invalid input'
@@ -84,7 +82,6 @@ class AuthController {
             }
 
             const token = generateToken({ id: user._id })
-            console.log(token, ">>");
 
             return res.status(200).json({
                 success: true,
@@ -93,7 +90,7 @@ class AuthController {
             })
         } catch (error) {
             console.log(error);
-            if(error.status === 500) {
+            if (error.status === 500) {
                 return res.status(500).json({
                     success: false,
                     message: 'Internal server error'
