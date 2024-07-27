@@ -1,17 +1,71 @@
 
 import User from "../models/User.js";
-import { comparePassword } from "../utils/bcrypt.js";
+import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.js";
-
+import { isSpaceOnlyLogin, isSpaceOnlyRegister } from "../utils/isSpaceOnly.js";
 class AuthController {
 
     static async register(req, res) {
-        
+        try {
+            const { username, password } = req.body
+            if (!username || !password || isSpaceOnlyRegister(username, password)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid input'
+                })
+            }
+            if(password.length < 6 || username.length < 6) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Password or username must be at least 6 characters'
+                })
+            }
+
+            const user = await User.findOne({ username })
+
+            if(user) {
+                return res.status(422).json({
+                    success: false,
+                    message: 'User already exists'
+                })
+            }
+
+            const registerFormField = {
+                username,
+                password: hashPassword(password)
+            }
+
+            const addUser = new User(registerFormField)
+
+            const result = await addUser.save()
+
+            return res.status(201).json({
+                success: true,
+                message: 'Successfully created new account',
+                result
+            })
+        } catch (error) {
+            console.log(error);
+            if(error.status === 500) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Internal server error'
+                })
+            }
+        }
+
+
     }
     static async login(req, res) {
         try {
             const { username, password } = req.body
-            const user = await User.findOne({username})
+            if(!username || !password || isSpaceOnlyLogin(username, password)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid input'
+                })
+            }
+            const user = await User.findOne({ username })
 
             if (!user) {
                 return res.status(400).json({
@@ -30,6 +84,7 @@ class AuthController {
             }
 
             const token = generateToken({ id: user._id })
+            console.log(token, ">>");
 
             return res.status(200).json({
                 success: true,
@@ -38,6 +93,12 @@ class AuthController {
             })
         } catch (error) {
             console.log(error);
+            if(error.status === 500) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Internal server error'
+                })
+            }
         }
     }
 }
