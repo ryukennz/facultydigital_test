@@ -1,10 +1,10 @@
 import Input from "./input";
 import Label from "./label";
-function index({ type, name, placeHolder }) {
+function index({ onChange, value, type, name, placeHolder }) {
   return (
     <div>
       <Label />
-      <Input type={type} name={name} placeHolder={placeHolder} />
+      <Input onChange={onChange} value={value} type={type} name={name} placeHolder={placeHolder} />
     </div>
   );
 }
