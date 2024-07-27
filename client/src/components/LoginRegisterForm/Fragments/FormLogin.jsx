@@ -31,7 +31,7 @@ function FormLogin() {
       if (response.status === 200) {
         setLogin(response.data);
         toast.success(response.data.message);
-        redirect('/')
+        redirect("/");
       }
     } catch (error) {
       console.log(error);
@@ -56,6 +56,7 @@ function FormLogin() {
       />
       <Button buttonName="Sign in" />
       <DontHaveAnAcc
+        onClick={() => redirect("/register")}
         dontHaveAcc="Don’t have an account yet?"
         signUp=" Sign up"
       />
