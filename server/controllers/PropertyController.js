@@ -1,4 +1,5 @@
 import Property from "../models/Property.js";
+import User from "../models/User.js";
 
 class PropertyController {
     static async getAllProperties(req, res) {
@@ -8,7 +9,7 @@ class PropertyController {
             return res.status(200).json({
                 success: true,
                 message: 'Get properties success',
-                properties
+                data: properties
             })
         } catch (error) {
             console.log(error);
@@ -22,6 +23,8 @@ class PropertyController {
     static async getPropertyById(req, res) {
         try {
             const { id } = req.params
+            const userId = req.user.id
+
             const property = await Property.findById(id)
 
             if (!property) {
@@ -33,15 +36,40 @@ class PropertyController {
 
             const incrementPropertyVisitCount = await Property.findByIdAndUpdate(id, { $inc: { visitCount: 1 } }, { new: true })
 
-            console.log(incrementPropertyVisitCount, ">>");
+            /** ADDING TO VIEWED DOCUMENT IN USERS COLLECTION */
+            const updateViewedProperties = await User.findByIdAndUpdate(userId, { $addToSet: { viewedProperties: id } })
 
             return res.status(200).json({
                 success: true,
                 message: 'Get property success',
-                property
+                data: property
             })
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+            })
+        }
+    }
 
+    static async getUserViewedProperties(req, res) {
+        try {
+            const userId = req.user.id
+            const user = await User.findById(userId)
 
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'User not found'
+                })
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'Get user viewed properties success',
+                data: user.viewedProperties
+            })
         } catch (error) {
             console.log(error);
             return res.status(500).json({

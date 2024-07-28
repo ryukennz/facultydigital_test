@@ -41,7 +41,7 @@ class AuthController {
       return res.status(201).json({
         success: true,
         message: 'Successfully created new account',
-        result,
+        data: result,
       });
     } catch (error) {
       console.error(error);
@@ -84,7 +84,7 @@ class AuthController {
       return res.status(200).json({
         success: true,
         message: 'Login success',
-        token,
+        data: token,
       });
     } catch (error) {
       console.error(error);

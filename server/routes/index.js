@@ -12,5 +12,6 @@ router.get('/properties', PropertyController.getAllProperties)
 
 router.use(auth)
 router.get('/properties/:id', PropertyController.getPropertyById)
+router.get('/user/viewed-properties', PropertyController.getUserViewedProperties)
 
 export default router
