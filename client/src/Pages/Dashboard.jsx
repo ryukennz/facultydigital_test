@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Line, Pie } from "react-chartjs-2";
 import Sidebar from "../components/Sidebar";
-import UserDropdown from "./UserDopdown";
+import UserDropdown from "./UserDropDown";
 import {
   Chart as ChartJS,
   ArcElement,

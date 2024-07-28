@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userIcon from '../assets/user.png'
 
 function UserDropdown() {
   const redirect = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null)
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -15,8 +16,20 @@ function UserDropdown() {
     redirect("/login");
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button onClick={toggleDropdown} className="flex items-center">
         <img
           src={userIcon}
