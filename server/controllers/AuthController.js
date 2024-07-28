@@ -1,103 +1,117 @@
-
 import User from "../models/User.js";
 import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.js";
 import { isSpaceOnlyLogin, isSpaceOnlyRegister } from "../utils/isSpaceOnly.js";
+
 class AuthController {
+  static async register(req, res) {
+    try {
+      const { username, password } = req.body;
+      if (!username || !password || isSpaceOnlyRegister(username, password)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid input',
+        });
+      }
+      if (password.length < 6 || username.length < 6) {
+        return res.status(400).json({
+          success: false,
+          message: 'Password or username must be at least 6 characters',
+        });
+      }
 
-    static async register(req, res) {
-        try {
-            const { username, password } = req.body
-            if (!username || !password || isSpaceOnlyRegister(username, password)) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Invalid input'
-                })
-            }
-            if (password.length < 6 || username.length < 6) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Password or username must be at least 6 characters'
-                })
-            }
+      const user = await User.findOne({ username });
 
-            const user = await User.findOne({ username })
+      if (user) {
+        return res.status(422).json({
+          success: false,
+          message: 'User already exists',
+        });
+      }
 
-            if (user) {
-                return res.status(422).json({
-                    success: false,
-                    message: 'User already exists'
-                })
-            }
+      const registerFormField = {
+        username,
+        password: await hashPassword(password),
+      };
 
-            const registerFormField = {
-                username,
-                password: hashPassword(password)
-            }
+      const addUser = new User(registerFormField);
 
-            const addUser = new User(registerFormField)
+      const result = await addUser.save();
 
-            const result = await addUser.save()
-
-            return res.status(201).json({
-                success: true,
-                message: 'Successfully created new account',
-                result
-            })
-        } catch (error) {
-            console.log(error);
-            if (error.status === 500) {
-                return res.status(500).json({
-                    success: false,
-                    message: 'Internal server error'
-                })
-            }
-        }
+      return res.status(201).json({
+        success: true,
+        message: 'Successfully created new account',
+        result,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+      });
     }
-    static async login(req, res) {
-        try {
-            const { username, password } = req.body
-            if (!username || !password || isSpaceOnlyLogin(username, password)) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Invalid input'
-                })
-            }
-            const user = await User.findOne({ username })
+  }
 
-            if (!user) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'User not found'
-                })
-            }
+  static async login(req, res) {
+    try {
+      const { username, password } = req.body;
+      if (!username || !password || isSpaceOnlyLogin(username, password)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid input',
+        });
+      }
+      const user = await User.findOne({ username });
 
-            const checkPassword = await comparePassword(password, user.password)
+      if (!user) {
+        return res.status(400).json({
+          success: false,
+          message: 'User not found',
+        });
+      }
 
-            if (!checkPassword) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Wrong password'
-                })
-            }
+      const checkPassword = await comparePassword(password, user.password);
 
-            const token = generateToken({ id: user._id })
+      if (!checkPassword) {
+        return res.status(400).json({
+          success: false,
+          message: 'Wrong password',
+        });
+      }
 
-            return res.status(200).json({
-                success: true,
-                message: 'Login success',
-                token
-            })
-        } catch (error) {
-            console.log(error);
-            if (error.status === 500) {
-                return res.status(500).json({
-                    success: false,
-                    message: 'Internal server error'
-                })
-            }
-        }
+      const token = generateToken({ id: user._id });
+
+      return res.status(200).json({
+        success: true,
+        message: 'Login success',
+        token,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+      });
     }
+  }
+
+  static async getUsers(req, res) {
+    try {
+      const users = await User.find()
+
+      return res.status(200).json({
+        success: true,
+        message: 'Get users success',
+        users
+      })
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+      });
+    }
+  }
 }
 
-export default AuthController
+export default AuthController;
