@@ -11,6 +11,8 @@ function FormRegister() {
   const [register, setRegister] = useState({
     username: "",
     password: "",
+    firstName: "",
+    lastName: "",
   });
 
   const handleChange = (e) => {
@@ -26,11 +28,12 @@ function FormRegister() {
     try {
       const response = await axios({
         method: "POST",
-        url: "http://localhost:9000/api/users/register",
+        url: "http://localhost:9000/api/auth/register",
         data: register,
       });
-      if (response.status === 200) {
-        setRegister(response.data);
+      console.log(response, ">>>>>");
+      if (response.status === 201) {
+        setRegister(response.data.data);
         toast.success(response.data.message);
         redirect("/login");
       }
@@ -55,6 +58,20 @@ function FormRegister() {
         type={"password"}
         name={"password"}
         placeHolder={"******"}
+      />
+      <Input
+        onChange={handleChange}
+        value={register.firstName}
+        type={"text"}
+        name={"firstName"}
+        placeHolder={"First name"}
+      />
+      <Input
+        onChange={handleChange}
+        value={register.lastName}
+        type={"text"}
+        name={"lastName"}
+        placeHolder={"Last name"}
       />
       <Button buttonName="Sign up" />
       <DontHaveAnAcc 
