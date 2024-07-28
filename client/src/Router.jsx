@@ -5,6 +5,7 @@ import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/Login";
 import RegisterPage from "./Pages/Register";
 import UserPage from "./Pages/UserPage";
+import Properties from "./Pages/Properties.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/users",
         element: <UserPage />,
+      },
+      {
+        path: "/properties",
+        element: <Properties />,
       },
     ],
   },

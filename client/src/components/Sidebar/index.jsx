@@ -41,6 +41,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               <span className={`${!isOpen && "hidden"}`}>Users Table</span>
             </NavLink>
           </li>
+          <li className="p-4">
+            <NavLink to="/properties" activeClassName="font-bold">
+              <span className={`${!isOpen && "hidden"}`}>Properties</span>
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </div>

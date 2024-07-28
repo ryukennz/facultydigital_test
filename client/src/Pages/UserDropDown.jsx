@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import userIcon from '../assets/user.png'
+import userIcon from "../assets/user.png";
 
 function UserDropdown() {
   const redirect = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -31,11 +31,7 @@ function UserDropdown() {
   return (
     <div className="relative" ref={dropdownRef}>
       <button onClick={toggleDropdown} className="flex items-center">
-        <img
-          src={userIcon}
-          alt="User"
-          className="w-8 h-8"
-        />
+        <img src={userIcon} alt="User" className="w-8 h-8" />
       </button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
