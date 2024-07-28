@@ -31,7 +31,6 @@ function FormRegister() {
         url: "http://localhost:9000/api/auth/register",
         data: register,
       });
-      console.log(response, ">>>>>");
       if (response.status === 201) {
         setRegister(response.data.data);
         toast.success(response.data.message);
@@ -74,9 +73,11 @@ function FormRegister() {
         placeHolder={"Last name"}
       />
       <Button buttonName="Sign up" />
-      <DontHaveAnAcc 
-      onClick={() => redirect("/login")}
-      dontHaveAcc="Already have an account?" signUp=" Sign in" />
+      <DontHaveAnAcc
+        onClick={() => redirect("/login")}
+        dontHaveAcc="Already have an account?"
+        signUp=" Sign in"
+      />
     </form>
   );
 }

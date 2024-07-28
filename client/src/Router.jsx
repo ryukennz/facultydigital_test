@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainPage />,
     loader: () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("user_auth");
       if (!token) {
         return redirect("/login");
       }
@@ -18,6 +18,13 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+    loader: () => {
+      const token = localStorage.getItem("user_auth");
+      if (token) {
+        return redirect("/");
+      }
+      return null;
+    },
   },
   {
     path: "/register",

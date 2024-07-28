@@ -25,10 +25,11 @@ function FormLogin() {
     try {
       const response = await axios({
         method: "POST",
-        url: "http://localhost:9000/api/users/login",
+        url: "http://localhost:9000/api/auth/login",
         data: login,
       });
       if (response.status === 200) {
+        localStorage.setItem("user_auth", response.data.data);
         setLogin(response.data);
         toast.success(response.data.message);
         redirect("/");
