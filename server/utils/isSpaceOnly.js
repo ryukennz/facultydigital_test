@@ -1,12 +1,14 @@
-export const isSpaceOnlyRegister = (username, password) => {
-    if (!username || !password) {
+export const isSpaceOnlyRegister = (username, password, firstName, lastName) => {
+    if (!username || !password || !firstName || !lastName) {
         return true
     }
     const trimmedRegisterFormField = {
         username: username.trim(),
-        password: password.trim()
+        password: password.trim(),
+        firstName: firstName.trim(),
+        lastName: lastName.trim()
     }
-    return trimmedRegisterFormField.username && trimmedRegisterFormField.password == "" ? true : false
+    return trimmedRegisterFormField.username && trimmedRegisterFormField.password && trimmedRegisterFormField.firstName && trimmedRegisterFormField.lastName == "" ? true : false
 }
 
 export const isSpaceOnlyLogin = (username, password) => {

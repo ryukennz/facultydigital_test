@@ -6,8 +6,8 @@ import { isSpaceOnlyLogin, isSpaceOnlyRegister } from "../utils/isSpaceOnly.js";
 class AuthController {
   static async register(req, res) {
     try {
-      const { username, password } = req.body;
-      if (!username || !password || isSpaceOnlyRegister(username, password)) {
+      const { username, password, role, firstName, lastName } = req.body;
+      if (!username || !password || !firstName || !lastName || isSpaceOnlyRegister(username, password, firstName, lastName)) {
         return res.status(400).json({
           success: false,
           message: 'Invalid input',
@@ -30,8 +30,8 @@ class AuthController {
       }
 
       const registerFormField = {
-        username,
-        password: await hashPassword(password),
+        ...req.body,
+        password: await hashPassword(password)
       };
 
       const addUser = new User(registerFormField);
