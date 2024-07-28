@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Line, Pie } from "react-chartjs-2";
-import Sidebar from "../components/Sidebar";
 import UserDropdown from "./UserDropDown";
 import {
   Chart as ChartJS,
@@ -32,7 +31,6 @@ const Dashboard = () => {
   const [properties, setProperties] = useState([]);
   const [lineChartData, setLineChartData] = useState({});
   const [pieChartData, setPieChartData] = useState({});
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -130,17 +128,11 @@ const Dashboard = () => {
     }
   }, [users, properties]);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   return (
     <div className="flex h-screen">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div
-        className={`flex-1 p-6 transition-all duration-300 ${
-          isSidebarOpen ? "ml-64" : "ml-16"
-        }`}
+        className={`flex-1 p-6 transition-all duration-300}`}
       >
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Admin Dashboard</h1>
