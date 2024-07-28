@@ -12,7 +12,6 @@ export const auth = async (req, res, next) => {
         }
         const payload = verifyToken(token)
         const user = await User.findById(payload.id)
-        console.log(user, ">>");
         if (!user) {
             return res.status(401).json({
                 success: false,

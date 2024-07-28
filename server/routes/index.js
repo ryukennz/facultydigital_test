@@ -11,7 +11,6 @@ router.post('/auth/register', AuthController.register)
 router.get('/properties', PropertyController.getAllProperties)
 
 router.use(auth)
-/** AUTH IMPLEMENTED */
 router.get('/properties/:id', PropertyController.getPropertyById)
 
 export default router
