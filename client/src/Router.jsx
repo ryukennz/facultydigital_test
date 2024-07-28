@@ -1,12 +1,12 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
-import MainPage from "./Pages/MainPage";
+import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/Login";
 import RegisterPage from "./Pages/Register";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainPage />,
+    element: <Dashboard />,
     loader: () => {
       const token = localStorage.getItem("user_auth");
       if (!token) {

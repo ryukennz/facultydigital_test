@@ -1,4 +1,4 @@
-function input({onChange, type, name, placeHolder, value}) {
+function input({ onChange, type, name, placeHolder, value }) {
   return (
     <input
       type={type}
