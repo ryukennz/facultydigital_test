@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+
 const sidebarVariants = {
   open: {
     width: "250px",
@@ -14,6 +15,7 @@ const sidebarVariants = {
     },
   },
 };
+
 function index({ isOpen, toggleSidebar }) {
   return (
     <motion.div
@@ -26,10 +28,10 @@ function index({ isOpen, toggleSidebar }) {
         {isOpen ? "Close" : "Open"}
       </button>
       {isOpen && (
-        <ul>
-            <li>
-                <Link to="/">Dashboard</Link>
-            </li>
+        <ul className="mt-10">
+          <li className="p-2">
+            <Link to="/">Dashboard</Link>
+          </li>
         </ul>
       )}
     </motion.div>
