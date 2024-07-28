@@ -97,7 +97,7 @@ class AuthController {
 
   static async getUsers(req, res) {
     try {
-      const users = await User.find()
+      const users = await User.find().populate('viewedProperties');
 
       return res.status(200).json({
         success: true,
