@@ -102,7 +102,7 @@ class AuthController {
       return res.status(200).json({
         success: true,
         message: 'Get users success',
-        users
+        data: users
       })
     } catch (error) {
       console.log(error);
