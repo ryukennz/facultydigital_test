@@ -30,7 +30,7 @@ const UserPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+    <div className="min-h-screen flex flex-col gap-4 items-center justify-center bg-white">
       <h1 className="text-2xl font-bold mb-4">Users Table</h1>
       <UserTable users={users} />
     </div>

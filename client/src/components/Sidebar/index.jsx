@@ -16,7 +16,13 @@ const sidebarVariants = {
   },
 };
 
-function index({ isOpen, toggleSidebar }) {
+const index = ({ isOpen, toggleSidebar }) => {
+  const handleLinkClick = () => {
+    if (isOpen) {
+      toggleSidebar();
+    }
+  };
+
   return (
     <motion.div
       initial={false}
@@ -42,18 +48,22 @@ function index({ isOpen, toggleSidebar }) {
       </button>
       {isOpen && (
         <div className="p-4">
-        <ul className="">
-          <li className="p-2">
-            <Link to="/">Dashboard</Link>
-          </li>
-          <li className="p-2">
-            <Link to="/users">Users Table</Link>
-          </li>
-        </ul>
+          <ul>
+            <li className="p-2">
+              <Link to="/" onClick={handleLinkClick}>
+                Dashboard
+              </Link>
+            </li>
+            <li className="p-2">
+              <Link to="/users" onClick={handleLinkClick}>
+                Users Table
+              </Link>
+            </li>
+          </ul>
         </div>
       )}
     </motion.div>
   );
-}
+};
 
 export default index;

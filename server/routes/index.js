@@ -12,7 +12,7 @@ router.get('/properties', PropertyController.getAllProperties)
 
 router.use(auth)
 router.get('/properties/:id', PropertyController.getPropertyById)
-router.use(authorization)
+// router.use(authorization)
 router.get('/users', AuthController.getUsers)
 router.get('/user/viewed-properties', PropertyController.getUserViewedProperties)
 
